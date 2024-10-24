@@ -1,1 +1,0 @@
-# tmind.github.io
