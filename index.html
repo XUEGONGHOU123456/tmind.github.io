@@ -1,73 +1,508 @@
-<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"><link rel="icon" href="dist/gree.ico"><title>TMind格力电商用例管理系统</title><script>// 自定义静态资源的路径
-      window.externalPublicPath = './'
-      // 接管应用
-      window.takeOverApp = false</script><script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({
-        id: 'KRO0WxK8GT66tYCQ',
-        ck: 'KRO0WxK8GT66tYCQ',
-        autoTrack: true
-      })</script><link href="css/chunk-vendors.css?978e0470c3f8da5cf663" rel="stylesheet"><link href="css/app.css?978e0470c3f8da5cf663" rel="stylesheet"></head><body><noscript><strong>We're sorry but thoughts doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><script>const getDataFromBackend = () => {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve({
-              mindMapData: {
-                root: {
-                  data: {
-                    text: '根节点'
-                  },
-                  children: []
-                },
-                theme: {
-                  template: 'avocado',
-                  config: {}
-                },
-                layout: 'logicalStructure',
-                config: {},
-                view: null
-              },
-              lang: 'zh',
-              localConfig: null
-            })
-          }, 200)
-        })
-      }
-      const setTakeOverAppMethods = data => {
-        window.takeOverAppMethods = {}
-        // 获取思维导图数据的函数
-        window.takeOverAppMethods.getMindMapData = () => {
-          return data.mindMapData
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMind - 测试用例管理平台</title>
+    <link rel="icon" href="logo.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#60a5fa',
+                        accent: '#93c5fd',
+                        neutral: '#f3f4f6',
+                        'neutral-dark': '#9ca3af',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    borderRadius: '0.75rem',
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
         }
-        // 保存思维导图数据的函数
-        window.takeOverAppMethods.saveMindMapData = data => {
-          console.log(data)
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white px-4 py-2 rounded-2xl hover:bg-opacity-90 transition-all duration-300;
+            }
+            .btn-outline {
+                @apply border border-primary text-primary px-4 py-2 rounded-2xl hover:bg-primary hover:text-white transition-all duration-300;
+            }
+            .input-field {
+                @apply w-full px-4 py-2 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+            }
+            .badge {
+                @apply px-2 py-1 text-xs rounded-full font-medium;
+            }
+            .badge-success {
+                @apply bg-green-100 text-green-800;
+            }
+            .badge-warning {
+                @apply bg-yellow-100 text-yellow-800;
+            }
+            .badge-danger {
+                @apply bg-red-100 text-red-800;
+            }
+            .gallery-scroll {
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+            .gallery-scroll::-webkit-scrollbar {
+                display: none;
+            }
         }
-        // 获取语言的函数
-        window.takeOverAppMethods.getLanguage = () => {
-          return data.lang
-        }
-        // 保存语言的函数
-        window.takeOverAppMethods.saveLanguage = lang => {
-          console.log(lang)
-        }
-        // 获取本地配置的函数
-        window.takeOverAppMethods.getLocalConfig = () => {
-          return data.localConfig
-        }
-        // 保存本地配置的函数
-        window.takeOverAppMethods.saveLocalConfig = config => {
-          console.log(config)
-        }
-      }
-      window.onload = async () => {
-        if (!window.takeOverApp) return
-        // 请求数据
-        const data = await getDataFromBackend()
-        // 设置全局的方法
-        setTakeOverAppMethods(data)
-        // 思维导图实例创建完成事件
-        window.$bus.$on('app_inited', mindMap => {
-          console.log(mindMap)
-        })
-        // 可以通过window.$bus.$on()来监听应用的一些事件
-        // 实例化页面
-        window.initApp()
-      }</script><script src="js/chunk-vendors.js?978e0470c3f8da5cf663"></script><script src="js/app.js?978e0470c3f8da5cf663"></script></body></html>
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 rounded-b-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <img src="logo.ico" alt="TMind Logo" class="h-8 w-8">
+                    <span class="ml-2 text-2xl md:text-3xl font-bold text-gray-800">TMind</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#features" class="text-lg font-semibold text-gray-700 hover:text-primary transition-colors">平台特点</a>
+                    <a href="#gallery" class="text-lg font-semibold text-gray-700 hover:text-primary transition-colors">平台展示</a>
+                    <a href="#testimonials" class="text-lg font-semibold text-gray-700 hover:text-primary transition-colors">客户评价</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <header class="bg-gradient-to-r from-primary to-secondary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">TMind 平台</h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90">让测试用例管理更简单，让团队协作更高效</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="http://8.135.19.76:8003/#/login" target="_blank" rel="noopener noreferrer" class="inline-block bg-white text-primary px-6 py-3 rounded-2xl font-medium hover:bg-opacity-90 transition-all duration-300">立即在线体验</a>
+                    <a href="https://gitee.com/xuegonghou/tmind7.0" target="_blank" rel="noopener noreferrer" class="inline-block border-2 border-white text-white px-6 py-3 rounded-2xl font-medium hover:bg-white hover:bg-opacity-10 transition-all duration-300">私有化部署</a>
+                    <!-- <a href="#tutorial" class="inline-block border-2 border-white text-white px-6 py-3 rounded-2xl font-medium hover:bg-white hover:bg-opacity-10 transition-all duration-300">使用教程</a> -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 视频播放教程 -->
+    <section class="py-16 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 tracking-tight">视频播放教程</h2>
+                <p class="text-xl text-gray-600">快速了解 TMind 核心操作</p>
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-card bg-black">
+                <video class="w-full aspect-video" controls preload="metadata" poster="">
+                    <source src="video/record.webm" type="video/webm">
+                    您的浏览器暂不支持视频播放。
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- 图片展示 -->
+    <section id="gallery" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 tracking-tight">平台展示</h2>
+                <p class="text-xl text-gray-600">截图小部分展示 TMind 核心界面与简洁操作</p>
+            </div>
+            <div class="gallery-scroll flex gap-8 overflow-x-auto overflow-y-hidden pb-4">
+                <!-- 第一组（用于无缝循环） -->
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/登录界面.png" alt="登录界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">登录界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/项目界面.png" alt="项目界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">项目界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/用例界面.png" alt="用例界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">用例界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/脑图界面.png" alt="脑图界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">脑图界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/表格界面.png" alt="表格界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">表格界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/日志界面.png" alt="日志界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">日志界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/统计界面.png" alt="统计界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">统计界面</h3>
+                    </div>
+                </div>
+                <!-- 复制一组实现无缝向左循环 -->
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/登录界面.png" alt="登录界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">登录界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/项目界面.png" alt="项目界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">项目界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/用例界面.png" alt="用例界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">用例界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/脑图界面.png" alt="脑图界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">脑图界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/表格界面.png" alt="表格界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">表格界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/日志界面.png" alt="日志界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">日志界面</h3>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-[min(380px,90vw)] bg-white rounded-2xl shadow-card overflow-hidden card-hover">
+                    <img src="images/统计界面.png" alt="统计界面" class="w-full h-72 w-full object-contain bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">统计界面</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 平台特点 -->
+    <section id="features" class="py-20 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 tracking-tight">平台特点</h2>
+                <p class="text-xl text-gray-600">从编写、运行到协作与统计，一站式覆盖测试用例全流程</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 用例与协作 -->
+                <div class="rounded-xl overflow-hidden shadow-card card-hover bg-white">
+                    <div class="bg-[#1867C0] text-white px-6 py-4">
+                        <h3 class="text-lg font-bold">用例与协作</h3>
+                        <p class="text-sm mt-1 opacity-90">多形态用例 · 灵活分享 · 多人协同</p>
+                    </div>
+                    <div class="px-6 py-5">
+                        <ul class="space-y-3 text-sm text-gray-700">
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="file-stack" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>脑图用例与 Excel 用例双模式</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>AI 一键生成用例，提升编写效率</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="play" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>运行用例、开发自测与产品验收全支持</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="share-2" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>全局 / 局部分享，局部用例与合并用例</span>
+                            </li>
+                       
+                        </ul>
+                    </div>
+                </div>
+                <!-- 日志、统计与导入导出 -->
+                <div class="rounded-xl overflow-hidden shadow-card card-hover bg-white">
+                    <div class="bg-[#1867C0] text-white px-6 py-4">
+                        <h3 class="text-lg font-bold">日志、统计与导入导出</h3>
+                        <p class="text-sm mt-1 opacity-90">可追溯、可量化、多格式互通</p>
+                    </div>
+                    <div class="px-6 py-5">
+                        <ul class="space-y-3 text-sm text-gray-700">
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="file-text" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>用例日志完整记录，变更可追溯</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="bar-chart-2" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>用例统计看板，支撑决策与复盘</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="download" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>多格式导入导出与另存为</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="presentation" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>导出 JSON / PNG / SVG / PDF / Markdown / XMind / TXT，支持对应格式导入</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 脑图结构与节点 -->
+                <div class="rounded-xl overflow-hidden shadow-card card-hover bg-white">
+                    <div class="bg-[#1867C0] text-white px-6 py-4">
+                        <h3 class="text-lg font-bold">脑图结构与节点</h3>
+                        <p class="text-sm mt-1 opacity-90">多结构、可定制、操作灵活</p>
+                    </div>
+                    <div class="px-6 py-5">
+                        <ul class="space-y-3 text-sm text-gray-700">
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="git-branch" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>逻辑结构图、思维导图、组织图、时间轴、鱼骨图等多种结构</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="palette" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>多主题内置，支持自定义样式与注册新主题</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="layers" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>节点支持富文本、图片、图标、链接、备注、标签、概要、公式</span>
+                            </li>
+                         
+                        </ul>
+                    </div>
+                </div>
+                <!-- 导出与界面功能 -->
+                <div class="rounded-xl overflow-hidden shadow-card card-hover bg-white">
+                    <div class="bg-[#1867C0] text-white px-6 py-4">
+                        <h3 class="text-lg font-bold">界面功能</h3>
+                        <p class="text-sm mt-1 opacity-90">多格式互通、高效操作与本地存储</p>
+                    </div>
+                    <div class="px-6 py-5">
+                        <ul class="space-y-3 text-sm text-gray-700">
+             
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="keyboard" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>快捷键、撤销重做、关联线、搜索替换、小地图、水印、手绘与彩虹线</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="panel-left" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>工具栏：节点增删与编辑（图片、图标、链接、备注、标签、概要）</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i data-lucide="sidebar" class="w-4 h-4 text-[#1867C0] flex-shrink-0 mt-0.5"></i>
+                                <span>侧边栏样式与结构面板、右键菜单、底部栏统计与视图切换；本地存储与文件读写</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 客户评价 -->
+    <section id="testimonials" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 tracking-tight">客户评价</h2>
+                <p class="text-xl text-gray-600">看看我们的客户如何评价TMind</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-card">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"TMind平台极大地提高了我们的测试效率，界面简洁直观，功能强大易用。"</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                            <span class="text-gray-600 font-medium">L</span>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-800">测试总监</p>
+                            <p class="text-xs text-gray-500">某互联网公司测试总监</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-card">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"AI智能推荐功能非常实用，为我们节省了大量编写用例的时间。"</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                            <span class="text-gray-600 font-medium">W</span>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-800">测试经理</p>
+                            <p class="text-xs text-gray-500">某软件公司测试经理</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-card">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star-half" class="w-5 h-5 fill-current"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"测试报告功能很棒，让我们能够清晰地了解测试进度和质量状况。"</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                            <span class="text-gray-600 font-medium">Z</span>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-800">测试程师</p>
+                            <p class="text-xs text-gray-500">某金融公司测试工程师</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <script>
+        // 初始化Lucide图标
+        lucide.createIcons();
+
+        // 图片查看器功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryImages = document.querySelectorAll('#gallery img');
+            galleryImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    // 创建模态框
+                    const modal = document.createElement('div');
+                    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+                    
+                    // 创建放大的图片
+                    const enlargedImg = document.createElement('img');
+                    enlargedImg.src = this.src;
+                    enlargedImg.className = 'max-w-4xl max-h-[80vh] object-contain';
+                    
+                    // 创建关闭按钮
+                    const closeBtn = document.createElement('button');
+                    closeBtn.innerHTML = '<i data-lucide="x" class="w-8 h-8 text-white"></i>';
+                    closeBtn.className = 'absolute top-4 right-4';
+                    closeBtn.onclick = () => document.body.removeChild(modal);
+                    
+                    // 组装模态框
+                    modal.appendChild(enlargedImg);
+                    modal.appendChild(closeBtn);
+                    document.body.appendChild(modal);
+                    
+                    // 初始化关闭按钮图标
+                    lucide.createIcons();
+                    
+                    // 点击模态框背景关闭
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            document.body.removeChild(modal);
+                        }
+                    });
+                });
+            });
+
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // 跑马灯：图片区一直向左滚动，无缝循环
+            (function marquee() {
+                const el = document.querySelector('.gallery-scroll');
+                if (!el) return;
+                const speed = 0.6;
+                let rafId = null;
+                function tick() {
+                    const half = el.scrollWidth / 2;
+                    if (half <= el.clientWidth) {
+                        rafId = requestAnimationFrame(tick);
+                        return;
+                    }
+                    el.scrollLeft += speed;
+                    if (el.scrollLeft >= half - 1) el.scrollLeft = 0;
+                    rafId = requestAnimationFrame(tick);
+                }
+                function start() {
+                    if (!rafId) rafId = requestAnimationFrame(tick);
+                }
+                function stop() {
+                    if (rafId) {
+                        cancelAnimationFrame(rafId);
+                        rafId = null;
+                    }
+                }
+                el.addEventListener('mouseenter', stop);
+                el.addEventListener('mouseleave', start);
+                if (document.readyState === 'complete') start();
+                else window.addEventListener('load', start);
+            })();
+        });
+    </script>
+</body>
+</html>
